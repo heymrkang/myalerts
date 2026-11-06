@@ -1,5 +1,14 @@
 # myalerts 프로젝트 규칙
 
+## 저장소 공개 원칙 (PUBLIC)
+
+- **이 저장소는 PUBLIC이다.** 모든 파일은 공개된다고 가정하고 작성한다.
+- Dockerfile, `.dockerignore`, 설정 파일, SQL, 주석, 문서 등 **모든 파일**에 민감정보를 넣지 않는다.
+- 금지 항목: 비밀번호, API 키, 토큰, 개인키, 실제 서버 계정명, IP, 호스트 경로, 내부 도메인, DB 접속정보.
+- 서버별 실제 값은 환경변수/Coolify 설정으로 주입하고, 코드·문서에는 placeholder만 둔다.
+- seed/예시 데이터도 실제 개인정보나 운영 값을 쓰지 않는다.
+- 로그, 주석, 커밋 메시지에도 민감정보를 남기지 않는다.
+
 ## 기술 스택
 
 - Spring Boot 4.1.2 / Java 21
@@ -45,11 +54,8 @@ spring.sql.init.data-locations=classpath:data.sql
 - Coolify로 배포하며, SQLite 파일은 **호스트 디렉토리를 컨테이너에 bind mount** 해서 유지한다.
 - 컨테이너 내부 경로는 항상 `/app/data` 이다.
   - datasource url: `jdbc:sqlite:/app/data/myalerts.db`
-- 서버별 호스트 경로:
-  - 운영 서버: `/home/taeged960402/infra/workspace/myalerts` → `/app/data`
-    - `infra/mariadb` = 공통 DB, `infra/workspace/{프로젝트}` = 프로젝트별 SQLite
-  - 개발 서버: `/mnt/storage/sqlite/myalerts` → `/app/data`
-    - 내장 SSD 용량이 작아 외장하드(UUID 고정 마운트)에 둔다.
+- 서버별 실제 호스트 경로는 이 저장소에 적지 않는다. Coolify 설정에서 관리한다.
+  - 컨테이너 내부 경로만 고정: `/app/data`
 - 애플리케이션은 JDK/JRE 포함 멀티스테이지 Docker 이미지로 빌드한다. 호스트에 JDK를 두지 않는다.
 - SQLite 특성상 **replica는 1개만** 운영한다. (스케일 아웃 금지)
 - mount 디렉토리 권한은 컨테이너 실행 유저가 쓰기 가능해야 한다. (`-wal`, `-journal` 생성 때문)

@@ -1,0 +1,16 @@
+.gradle
+build
+out
+bin
+.git
+.gitignore
+.gitattributes
+.idea
+.vscode
+*.iml
+data
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+HELP.md
