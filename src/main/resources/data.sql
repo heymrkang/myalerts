@@ -1,1 +1,2 @@
-INSERT OR IGNORE INTO tb_user (user_id, user_pw) VALUES ('test', 'test');
+-- 초기 데이터 없음
+SELECT 1;
